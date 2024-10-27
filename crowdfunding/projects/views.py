@@ -159,19 +159,19 @@ class PledgeDetail(APIView):
         )
 
 # Create updates views
-class UpdateList(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+# class UpdateList(APIView):
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def get(self, request, project_pk):
-        updates = Update.objects.filter(project_id=project_pk)
-        serializer = UpdateSerializer(updates, many=True)
-        return Response(serializer.data)
+#     def get(self, request, project_pk):
+#         updates = Update.objects.filter(project_id=project_pk)
+#         serializer = UpdateSerializer(updates, many=True)
+#         return Response(serializer.data)
     
-    def post(self, request, project_pk):
-        project = Project.objects.get(pk=project_pk)
-        serializer = UpdateSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(project=project)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status-status.HTTP_400_BAD_REQUEST)
+#     def post(self, request, project_pk):
+#         project = Project.objects.get(pk=project_pk)
+#         serializer = UpdateSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save(project=project)
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status-status.HTTP_400_BAD_REQUEST)
 

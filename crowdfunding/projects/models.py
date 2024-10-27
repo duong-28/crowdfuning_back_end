@@ -16,11 +16,11 @@ class Project(models.Model):
     )
 
 # adding an update model that links to the project model to view project updates 
-class Update(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='updates')
-    title = models.CharField(max_length=200)
-    content = models.TextField()
-    date_created = models.DateTimeField(auto_now_add = True)
+# class Update(models.Model):
+#     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='updates')
+#     title = models.CharField(max_length=200)
+#     content = models.TextField()
+#     date_created = models.DateTimeField(auto_now_add = True)
 
     # Get project id=1 from the database
     # project = Project.objects.get(pk=1)

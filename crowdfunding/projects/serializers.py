@@ -27,13 +27,13 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 # adding a serializer for the project update model
-class UpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Update
-        fields = '__all__'
+# class UpdateSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Update
+#         fields = '__all__'
 class ProjectDetailSerializer(ProjectSerializer):
     pledges = PledgeSerializer(many=True, read_only=True)
-    updates = UpdateSerializer(many=True, read_only=True) #updates
+    # updates = UpdateSerializer(many=True, read_only=True) #updates
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
