@@ -2,25 +2,30 @@
 Lucy Nguyen
 
 ## Planning:
-### Concept/Name: Atletico Saigon Crowdfunding Platform
-This is a website to raise funds for Atletico Saigon, an initiative aimed at providing soccer training sessions and life skills to vulnerable Vietnamese children in underprivileged areas of Saigon. Users can go on the website to support specific training sessions by Atletico by pledging funds or partnership / sponsorships.
+### Concept/Name: Atleticlub
+This is a website to raise funds for Atleticlub, an initiative hosted by Atletico Saigon to provide soccer training sessions and life skills to vulnerable Vietnamese children in underprivileged areas of Saigon. Users can go on the website to make pledges to support specific training sessions by Atletico with funds, sponsorship or partnership.
 
 ### Intended Audience/User Stories
 Donors(Users): Individuals/ Local Businesses/ Soccer Teams interested in supporting training sessions.
-    - As a donor, I want to navigate the website to view different projects and pledge funds to the one(s) that resonate with me
+    - As a donor, I want to easily navigate the website to view different projects and pledge funds to the project(s) that most resonate with me
     - As a donor, I want to contact Atletico Saigon to explore potential partnerships and sponsorships
     - As a donor, I want to create an account to make a donation securely, track my pledges and see how close a project is to reaching its goals
     - As a donor, I want to receive updates about the projects I have supported 
+    - As a donor, I want to modify or delete my pledges if I want to
+
 Admin (Atletico Team): Managing the website
     - As an admin, I want to create and manage projects, set fundraising goals, and track progress
     - As an admin, I want to view and manage users pledges
+    - As an admin, I want to be able to review and approve changes to a pledge made by users, including creating a pledge, modify and delete it.
+
 Beneficiaries (kids): Children to will receive the trainings
     - As kid, I want to view the upcoming activities, training sessions
     - As kid, I want to view those who have supported me
+    - AS kid, I want to view that the sponsorships are (new shoes, food, sport clothes,...)
 
 ### Front End Pages/Functionality
 - Homepage
-    - Displays a photo of Atletico in the background with the mission content text
+    - Displays a photo of Atletico tean in the background with the mission content text
     - Displays all active projects with current pledge amounts and progress towards goals
     - Easy access to create an account or login as a donor
 - Project Details Page
@@ -43,15 +48,22 @@ It can be helpful to keep the markdown preview open in VS Code so that you can s
 
 | URL             | HTTP Method |Purpose  | Request Body | Success Response Code | Authentication/Authorisation |
 | ---             | ----------- | ------- | ------------ | --------------------- | ---------------------------- |
-| /project/       | GET  | Retrieve all projects    |                                          |  200  | None       |
-| /projects/{id}  | GET  | Retrieve a project by ID |                                          |  200  | None       |
-| /projects/      | POST | Create a new project     | { "name","date", "goal", "description" } |  201  | Admin Auth |
-| /projects/{id}  | PUT  | Update project details   | { "name","date", "goal", "description" } |  200  | Admin Auth |
-| /projects/{id}  | DElETE | Delete a project       |                                          |  204  | Admin Auth |
-| /pledges/       | POST | Submit a pledge          | { "amount": float, "project": ID }       |  201  | User Auth  |
-| /users/         | POST | Create a user account    | { "name", "email", "password" }          |  201  | None       |
+| /project/       | GET | Retrieve all active project ||  200  |None|
+| /projects/{id}  | GET | Retrieve project by ID ||  200  | None |
+| /projects/      | POST | Create a new project     |"name","date", "goal", "description"|  201  | Admin Auth |
+| /projects/{id}  | PUT  | Update project details   |"name","date", "goal", "description"|  200  | Admin Auth |
+| /projects/{id}  | DELETE | Delete a project       |                                          |  204  | Admin Auth |
+| /projects/{id}/updates  | GET | Retrieve project updates ||200| User Auth |
+| /pledges/       | POST | Submit a pledge          |"amount": float, "project": ID|  201  | User Auth  |
+| /pledges/{id}   | PUT | Modify a pledge          |"amount": float|  200  | User Auth  |
+| /pledges/{id}   | DELETE | Delete a pledge          ||  204  |User Auth|
+| /users/         | POST | Create a user account    |"name", "email", "password"|  201  | None       |
+| /users/login    | POST | User login    |"email", "password"|  200  | None      |
+| /users/logout   | POST | User logout   | |  200  | None      |
 | /users/{id}     | GET  | Retrieve user details    | Retrieve user details                    |  200  | User Auth  |
-| /users/{id}     | PUT  | Update user details      | { "name", "email", "password" }          |  200  | User Auth  |
-| /users/{id}     | DELETE | Delete user account    | { "name", "email", "password" }          |  204  | User Auth  |
+| /users/{id}     | PUT  | Update user details      |"name", "email", "password"|  200  | User Auth  |
+| /users/{id}     | DELETE | Delete user account    | "name", "email", "password"|  204  | User Auth  |
+| /admin/approvals/ | GET | View pending pledge modifications | |  204  | Admin Auth  |
+| /admin/approvals/{id} | PUT | Approve or reject pledge updates |"approval_status": "approved/rejected"| 200 | Admin Auth  |   
 ### DB Schema
 ![]( {{ ./relative/path/to/your/schema/image.png }} )
