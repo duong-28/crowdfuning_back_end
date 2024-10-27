@@ -23,13 +23,13 @@ class PledgeDetailSerializer(PledgeSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.id')
     class Meta: 
-        model = apps.get_model('projects.Update')
+        model = apps.get_model('projects.Project')
         fields = '__all__'
 
 # adding a serializer for the project update model
 # class UpdateSerializer(serializers.ModelSerializer):
 #     class Meta:
-#         model = Update
+#         model = Up    date
 #         fields = '__all__'
 class ProjectDetailSerializer(ProjectSerializer):
     pledges = PledgeSerializer(many=True, read_only=True)
