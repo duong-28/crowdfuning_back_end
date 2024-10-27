@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get(
     'DJANGO_SECRET_KEY',
-    'django-insecure-b#x0!6ow(!vgfupr&q@^7a)e6u6%+wo-3hz&y%^en#mv-+6yru'
+    'django-insecure-b#x0!6ow(!vgfupr&q@^7a)e6u6%+wo-3hz&y%^en#mv-+6yru' #is a signature to prevent bad people to get in your website
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -55,7 +55,8 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
-    ]
+    ],
+     'EXCEPTION_HANDLER': 'my_project.my_app.utils.custom_exception_handler'
 }
 
 AUTH_USER_MODEL = 'users.CustomUser'

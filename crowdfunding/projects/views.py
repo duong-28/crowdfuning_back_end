@@ -8,6 +8,18 @@ from django.http import Http404
 from.models import Project, Pledge
 from .serializers import ProjectSerializer, PledgeSerializer, ProjectDetailSerializer, PledgeDetailSerializer
 from .permissions import IsOwnerOrReadOnly, IsSupporterOrReadOnly
+from rest_framework.views import exception_handler
+
+def custom_exception_handler(exc, context):
+    # Call REST framework's default exception handler first,
+    # to get standard error response
+    response = exception_handler(exc, context)
+
+    # now add the HTTP status code to the response
+    if response is not None: 
+        response.data['status_code'] = response.status_code 
+
+    return response
 
 class ProjectList(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -38,9 +50,15 @@ class ProjectDetail(APIView):
 
     def get_object(self, pk):
         try:
+            # Getting data from the database
+            # NameOfYourModel.objects.get
+            # NameOfYourModel.objects.filter
             project = Project.objects.get(pk=pk)
+
+            # Running code in permission_classes
             self.check_object_permissions(self.request,project)
             return project
+        # No matching id in the database
         except Project.DoesNotExist:
             raise Http404
         
@@ -64,7 +82,12 @@ class ProjectDetail(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
-    
+    def delete(self, request, pk):
+        project = self.get_object(pk)
+
+        # Django Model method
+        project.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 class PledgeList(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
