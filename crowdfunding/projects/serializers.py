@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.apps import apps
+from .models import Project, Pledge, Update 
 
 class PledgeSerializer(serializers.ModelSerializer):
    supporter = serializers.ReadOnlyField(source='supporter.id')
@@ -22,11 +23,17 @@ class PledgeDetailSerializer(PledgeSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.id')
     class Meta: 
-        model = apps.get_model('projects.Project')
+        model = apps.get_model('projects.Update')
         fields = '__all__'
 
+# adding a serializer for the project update model
+class UpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Update
+        fields = '__all__'
 class ProjectDetailSerializer(ProjectSerializer):
     pledges = PledgeSerializer(many=True, read_only=True)
+    updates = UpdateSerializer(many=True, read_only=True) #updates
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)

@@ -5,10 +5,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from django.http import Http404
-from.models import Project, Pledge
+from.models import Project, Pledge, Update
 from .serializers import ProjectSerializer, PledgeSerializer, ProjectDetailSerializer, PledgeDetailSerializer
 from .permissions import IsOwnerOrReadOnly, IsSupporterOrReadOnly
 from rest_framework.views import exception_handler
+
 
 def custom_exception_handler(exc, context):
     # Call REST framework's default exception handler first,
@@ -156,3 +157,21 @@ class PledgeDetail(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+
+# Create updates views
+class UpdateList(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get(self, request, project_pk):
+        updates = Update.objects.filter(project_id=project_pk)
+        serializer = UpdateSerializer(updates, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request, project_pk):
+        project = Project.objects.get(pk=project_pk)
+        serializer = UpdateSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(project=project)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status-status.HTTP_400_BAD_REQUEST)
+
