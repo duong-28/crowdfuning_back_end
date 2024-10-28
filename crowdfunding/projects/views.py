@@ -103,7 +103,7 @@ class PledgeList(APIView):
     def post(self, request):
         # Serializer here is turning the request JSON into a model
         # "supporter" is NOT allowed to be in the HTTP Request data
-        print(request.data)
+        # print(request.data)
         serializer = PledgeSerializer(data=request.data)
         # Check that a valid model can be created
         if serializer.is_valid():
