@@ -1,5 +1,5 @@
 # Crowdfunding Back End
-Lucy Nguyen
+Lucy Nguyen - Link to project: https://lucy-ng-84d59ecaf643.herokuapp.com/
 
 ## Planning:
 ### Concept/Name: Atleticlub
@@ -46,6 +46,8 @@ It might look messy here in the PDF, but once it's rendered it looks very neat!
 
 It can be helpful to keep the markdown preview open in VS Code so that you can see what you're typing more easily. }}
 
+##Note: I have added strike-through lines across API specs that I have failed to set up - I will keep it as is for now to come back later to fine tune - sorry for the messy look!
+
 | URL             | HTTP Method |Purpose  | Request Body | Success Response Code | Authentication/Authorisation |
 | ---             | ----------- | ------- | ------------ | --------------------- | ---------------------------- |
 | /project/       | GET | Retrieve all active project ||  200  |None|
@@ -53,7 +55,7 @@ It can be helpful to keep the markdown preview open in VS Code so that you can s
 | /projects/      | POST | Create a new project     |"name","date", "goal", "description"|  201  | Admin Auth |
 | /projects/{id}  | PUT  | Update project details   |"name","date", "goal", "description"|  200  | Admin Auth |
 | /projects/{id}  | DELETE | Delete a project       |                                          |  204  | Admin Auth |
-| /projects/{id}/updates  | GET | Retrieve project updates ||200| User Auth |
+| ~~/projects/{id}/updates~~ | ~~GET~~ | ~~Retrieve project updates~~ ||~~200~~|~~User Auth~~ |
 | /pledges/       | POST | Submit a pledge          |"amount": float, "project": ID|  201  | User Auth  |
 | /pledges/{id}   | PUT | Modify a pledge          |"amount": float|  200  | User Auth  |
 | /pledges/{id}   | DELETE | Delete a pledge          ||  204  |User Auth|
@@ -63,7 +65,28 @@ It can be helpful to keep the markdown preview open in VS Code so that you can s
 | /users/{id}     | GET  | Retrieve user details    | Retrieve user details                    |  200  | User Auth  |
 | /users/{id}     | PUT  | Update user details      |"name", "email", "password"|  200  | User Auth  |
 | /users/{id}     | DELETE | Delete user account    | "name", "email", "password"|  204  | User Auth  |
-| /admin/approvals/ | GET | View pending pledge modifications | |  204  | Admin Auth  |
-| /admin/approvals/{id} | PUT | Approve or reject pledge updates |"approval_status": "approved/rejected"| 200 | Admin Auth  |   
+| ~~/admin/approvals/~~ | ~~GET~~ | ~~View pending pledge modifications~~ | |  ~~204~~  | ~~Admin Auth~~  |
+| ~~/admin/approvals/{id}~~ | ~~PUT~~ | ~~Approve or reject pledge update~~ |~~"approval_status": "approved/rejected"~~| ~~200~~ |~~Admin Auth~~  |   
 ### DB Schema
-![]( {{ ./relative/path/to/your/schema/image.png }} )
+![alt text](image-7.png)
+
+### Screenshots in Insomnia 
+1. GET method (projects)
+ ![alt text](image-2.png)
+
+2. POST method (pledges)
+ ![alt text](image-1.png)
+
+3. A TOKEN being returned
+ ![alt text](image.png)
+
+### Register a new user and create a new project 
+1. Create New User
+ ![alt text](image-3.png)
+
+2. User login 
+ ![alt text](image-4.png)
+
+3. Create a project with user token
+ ![alt text](image-5.png)
+ ![alt text](image-6.png)
