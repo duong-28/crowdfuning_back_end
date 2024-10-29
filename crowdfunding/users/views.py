@@ -44,7 +44,7 @@ class CustomUserDetail(APIView):
         serializer = CustomUserSerializer(
             instance = users, 
             data = request.data,
-            request = True, 
+            partial = True, 
             context = {'request': request}
         )
         if serializer.is_valid():
@@ -52,7 +52,7 @@ class CustomUserDetail(APIView):
             return Response(serializer.data)
 
         return Response(
-            serializer.errors, status = status.HTTP_404_NOT_FOUND
+            serializer.errors, status = status.HTTP_400_BAD_REQUEST
         )    
     
     def delete(self, request, pk):
