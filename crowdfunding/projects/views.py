@@ -147,7 +147,7 @@ class PledgeDetail(APIView):
         serializer = PledgeDetailSerializer(
             instance=pledges, 
             data=request.data,
-            partial=True
+            #partial=True
         )
         if serializer.is_valid():
             serializer.save()
