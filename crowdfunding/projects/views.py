@@ -147,7 +147,7 @@ class PledgeDetail(APIView):
         serializer = PledgeDetailSerializer(
             instance=pledges, 
             data=request.data,
-            #partial=True
+            partial=True
         )
         if serializer.is_valid():
             serializer.save()
@@ -157,6 +157,12 @@ class PledgeDetail(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+    def delete(self, request, pk):
+        pledges = self.get_object(pk)
+
+        # Django Model method
+        pledges.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 # Create updates views
 # class UpdateList(APIView):
