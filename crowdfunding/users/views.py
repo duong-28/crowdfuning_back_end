@@ -54,3 +54,7 @@ class CustomAuthToken(ObtainAuthToken):
             'email': user.email
     })
 
+class LogoutView(APIView):
+    def post(self, request):
+        request.user.auth_token.delete()  # Deletes the token
+        return Response({"message": "Successfully logged out"}, status=status.HTTP_200_OK)
