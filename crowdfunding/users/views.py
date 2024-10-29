@@ -6,6 +6,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from .models import CustomUser
 from .serializers import CustomUserSerializer
+from rest_framework.permissions import IsAuthenticated
 
 class CustomUserList(APIView):
     def get(self, request):
@@ -34,9 +35,30 @@ class CustomUserDetail(APIView):
             raise Http404
         
     def get(self, request, pk):
-        user = self.get_object(pk)
-        serializer = CustomUserSerializer(user)
+        users = self.get_object(pk)
+        serializer = CustomUserSerializer(users)
         return Response(serializer.data)
+
+    def put(self, request, pk):
+        users = self.get_object(pk)
+        serializer = CustomUserSerializer(
+            instance = users, 
+            data = request.data,
+            request = True, 
+            context = {'request': request}
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
+        return Response(
+            serializer.errors, status = status.HTTP_404_NOT_FOUND
+        )    
+    
+    def delete(self, request, pk):
+        users = self.get_object(pk)
+        users.delete()
+        return Response(status.HTTP_204_NO_CONTENT)
     
 class CustomAuthToken(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
@@ -55,6 +77,8 @@ class CustomAuthToken(ObtainAuthToken):
     })
 
 class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         request.user.auth_token.delete()  # Deletes the token
         return Response({"message": "Successfully logged out"}, status=status.HTTP_200_OK)
