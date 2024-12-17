@@ -91,7 +91,7 @@ class ProjectDetail(APIView):
         project.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 class PledgeList(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
     def get (self, request):
         pledges = Pledge.objects.all()
@@ -110,7 +110,7 @@ class PledgeList(APIView):
         if serializer.is_valid():
             # Where the model actually gets saved into the database
             # request.user <= Authentication Token, find matching user
-            serializer.save(supporter=request.user)
+            serializer.save(supporter=request.user if request.user.is_authenticated else None)
             return Response(
                 # serializer.data is JSON
                 serializer.data,
