@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 from rest_framework.views import APIView
@@ -181,4 +181,13 @@ class PledgeDetail(APIView):
 #             serializer.save(project=project)
 #             return Response(serializer.data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status-status.HTTP_400_BAD_REQUEST)
+
+class ProjectPledgeList(APIView):
+    permission_classes = [permissions.AllowAny]
+    
+    def get(self, request, project_pk):
+        project = get_object_or_404(Project, pk=project_pk)
+        pledges = Pledge.objects.filter(project=project)
+        serializer = PledgeSerializer(pledges, many=True)
+        return Response(serializer.data)
 
