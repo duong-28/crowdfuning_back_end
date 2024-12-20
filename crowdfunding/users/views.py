@@ -6,7 +6,8 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from .models import CustomUser
 from .serializers import CustomUserSerializer
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from .permissions import IsOwnerOrReadOnly
 
 class CustomUserList(APIView):
     def get(self, request):
@@ -28,6 +29,7 @@ class CustomUserList(APIView):
         )
     
 class CustomUserDetail(APIView):
+    
     def get_object(self, pk):
         try:
             return CustomUser.objects.get(pk=pk)
@@ -55,8 +57,14 @@ class CustomUserDetail(APIView):
             serializer.errors, status = status.HTTP_400_BAD_REQUEST
         )    
     
+    permission_classes = [
+        # IsAuthenticatedOrReadOnly,
+        IsOwnerOrReadOnly
+    ]
+
     def delete(self, request, pk):
         users = self.get_object(pk)
+        self.check_object_permissions(request, users)
         users.delete()
         return Response(status.HTTP_204_NO_CONTENT)
     
